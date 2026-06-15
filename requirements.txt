@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv
+jinja2
+sqlalchemy
+alembic
+gunicorn
+httpx
+pillow

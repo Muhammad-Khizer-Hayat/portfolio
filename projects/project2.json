@@ -1,0 +1,8 @@
+{
+  "id": 2,
+  "title": "Portfolio Website",
+  "description": "This very portfolio — built with FastAPI backend, vanilla JS frontend, and deployed via Docker.",
+  "tech_stack": ["Python", "FastAPI", "HTML", "CSS", "JavaScript", "Docker"],
+  "github_url": "https://github.com/yourusername/portfolio",
+  "live_url": null
+}
