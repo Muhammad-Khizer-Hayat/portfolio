@@ -3,6 +3,6 @@
   "title": "Portfolio Website",
   "description": "This very portfolio — built with FastAPI backend, vanilla JS frontend, and deployed via Docker.",
   "tech_stack": ["Python", "FastAPI", "HTML", "CSS", "JavaScript", "Docker"],
-  "github_url": "https://github.com/yourusername/portfolio",
+  "github_url": "https://github.com/Muhammad-Khizer-Hayat/portfolio",
   "live_url": null
 }
