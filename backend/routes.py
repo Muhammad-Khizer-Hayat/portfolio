@@ -41,7 +41,7 @@ def get_skills():
         {"name": "FastAPI",     "level": 85, "category": "Backend"},
         {"name": "LangChain",   "level": 80, "category": "AI/ML"},
         {"name": "FAISS",       "level": 75, "category": "AI/ML"},
-        {"name": "Docker",      "level": 70, "category": "DevOps"},
+        # {"name": "Docker",      "level": 70, "category": "DevOps"},
         {"name": "MySQL",       "level": 75, "category": "Database"},
         {"name": "JavaScript",  "level": 65, "category": "Frontend"},
         {"name": "HTML/CSS",    "level": 80, "category": "Frontend"},
