@@ -54,21 +54,38 @@ def send_contact(form: ContactForm):
     if not form.name or not form.message:
         raise HTTPException(status_code=400, detail="Name and message are required")
 
-    # Send email if credentials are configured
-    if settings.EMAIL_ADDRESS and settings.EMAIL_PASSWORD:
-        try:
-            msg = MIMEMultipart()
-            msg["From"]    = settings.EMAIL_ADDRESS
-            msg["To"]      = settings.OWNER_EMAIL or settings.EMAIL_ADDRESS
-            msg["Subject"] = f"Portfolio contact from {form.name}"
-            body = f"Name: {form.name}\nEmail: {form.email}\n\nMessage:\n{form.message}"
-            msg.attach(MIMEText(body, "plain"))
+    # Fail loudly if email isn't configured, instead of silently
+    # reporting success without actually sending anything.
+    if not settings.EMAIL_ADDRESS or not settings.EMAIL_PASSWORD:
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Email is not configured on the server. "
+                "Set EMAIL_ADDRESS and EMAIL_PASSWORD environment variables."
+            ),
+        )
 
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-                server.login(settings.EMAIL_ADDRESS, settings.EMAIL_PASSWORD)
-                server.send_message(msg)
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Email error: {str(e)}")
+    try:
+        msg = MIMEMultipart()
+        msg["From"]    = settings.EMAIL_ADDRESS
+        msg["To"]      = settings.OWNER_EMAIL or settings.EMAIL_ADDRESS
+        msg["Subject"] = f"Portfolio contact from {form.name}"
+        body = f"Name: {form.name}\nEmail: {form.email}\n\nMessage:\n{form.message}"
+        msg.attach(MIMEText(body, "plain"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(settings.EMAIL_ADDRESS, settings.EMAIL_PASSWORD)
+            server.send_message(msg)
+    except smtplib.SMTPAuthenticationError:
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Email login failed. Check that EMAIL_ADDRESS is correct and "
+                "EMAIL_PASSWORD is a valid Gmail App Password (not your regular password)."
+            ),
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Email error: {str(e)}")
 
     return {"success": True, "message": "Message received! I'll get back to you soon."}
 
