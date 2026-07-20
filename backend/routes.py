@@ -2,9 +2,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from .models import ContactForm, Project, Skill
 from .config import settings
-import json, os, smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import json, os
+import resend
 
 router = APIRouter(prefix="/api")
 
@@ -54,36 +53,25 @@ def send_contact(form: ContactForm):
     if not form.name or not form.message:
         raise HTTPException(status_code=400, detail="Name and message are required")
 
-    # Fail loudly if email isn't configured, instead of silently
-    # reporting success without actually sending anything.
-    if not settings.EMAIL_ADDRESS or not settings.EMAIL_PASSWORD:
+    if not settings.RESEND_API_KEY:
         raise HTTPException(
             status_code=500,
-            detail=(
-                "Email is not configured on the server. "
-                "Set EMAIL_ADDRESS and EMAIL_PASSWORD environment variables."
-            ),
+            detail="Email is not configured on the server. Set RESEND_API_KEY environment variable.",
         )
+
+    resend.api_key = settings.RESEND_API_KEY
 
     try:
-        msg = MIMEMultipart()
-        msg["From"]    = settings.EMAIL_ADDRESS
-        msg["To"]      = settings.OWNER_EMAIL or settings.EMAIL_ADDRESS
-        msg["Subject"] = f"Portfolio contact from {form.name}"
-        body = f"Name: {form.name}\nEmail: {form.email}\n\nMessage:\n{form.message}"
-        msg.attach(MIMEText(body, "plain"))
-
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(settings.EMAIL_ADDRESS, settings.EMAIL_PASSWORD)
-            server.send_message(msg)
-    except smtplib.SMTPAuthenticationError:
-        raise HTTPException(
-            status_code=500,
-            detail=(
-                "Email login failed. Check that EMAIL_ADDRESS is correct and "
-                "EMAIL_PASSWORD is a valid Gmail App Password (not your regular password)."
+        resend.Emails.send({
+            "from": "onboarding@resend.dev",
+            "to": settings.OWNER_EMAIL,
+            "subject": f"Portfolio contact from {form.name}",
+            "html": (
+                f"<p><strong>Name:</strong> {form.name}</p>"
+                f"<p><strong>Email:</strong> {form.email}</p>"
+                f"<p><strong>Message:</strong><br>{form.message}</p>"
             ),
-        )
+        })
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Email error: {str(e)}")
 

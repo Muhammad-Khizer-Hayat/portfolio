@@ -1,8 +1,7 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    EMAIL_ADDRESS: str = ""
-    EMAIL_PASSWORD: str = ""
+    RESEND_API_KEY: str = ""
     OWNER_EMAIL: str = ""
     APP_NAME: str = "My Portfolio"
 
