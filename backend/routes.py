@@ -65,6 +65,7 @@ def send_contact(form: ContactForm):
         resend.Emails.send({
             "from": "onboarding@resend.dev",
             "to": settings.OWNER_EMAIL,
+            "reply_to": form.email,
             "subject": f"Portfolio contact from {form.name}",
             "html": (
                 f"<p><strong>Name:</strong> {form.name}</p>"

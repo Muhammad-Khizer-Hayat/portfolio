@@ -1,5 +1,28 @@
 const API = "";  // empty = same origin
 
+// ---------- Mobile Nav Toggle ----------
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.getElementById("nav-menu");
+
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = navMenu.classList.toggle("open");
+    navToggle.classList.toggle("open", isOpen);
+    navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    document.body.classList.toggle("nav-open", isOpen);
+  });
+
+  // Close menu when a link is tapped
+  navMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+      navToggle.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("nav-open");
+    });
+  });
+}
+
 // ---------- Smooth Scrolling ----------
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -148,4 +171,3 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.15 });
 
 document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
-
