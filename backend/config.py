@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     RESEND_API_KEY: str = ""
     OWNER_EMAIL: str = ""
-    APP_NAME: str = "portfolio"
+    APP_NAME: str = "my portfolio"
 
     class Config:
         env_file = ".env"
