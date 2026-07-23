@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from .models import ContactForm, Project, Skill
 from .config import settings
+from .autoreply import send_auto_reply
 import json, os
 import resend
 
@@ -75,6 +76,10 @@ def send_contact(form: ContactForm):
         })
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Email error: {str(e)}")
+
+    # Auto-reply to the visitor. Never blocks or fails the main response -
+    # if it fails for any reason, the contact form still succeeds normally.
+    send_auto_reply(name=form.name, to_email=form.email, message=form.message)
 
     return {"success": True, "message": "Message received! I'll get back to you soon."}
 
