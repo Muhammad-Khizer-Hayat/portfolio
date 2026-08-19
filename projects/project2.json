@@ -1,8 +1,8 @@
 {
   "id": 2,
-  "title": "Portfolio Website",
-  "description": "This very portfolio — built with FastAPI backend, vanilla JS frontend, and deployed via Docker.",
+  "title": "Appliance Search",
+  "description": "A simple appliance search application built with FastAPI backend, vanilla JS frontend, and deployed via Docker.",
   "tech_stack": ["Python", "FastAPI", "HTML", "CSS", "JavaScript", "Docker"],
-  "github_url": "https://github.com/Muhammad-Khizer-Hayat/portfolio",
+  "github_url": "https://github.com/Muhammad-Khizer-Hayat/appliance-search",
   "live_url": null
 }
