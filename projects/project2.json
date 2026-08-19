@@ -1,8 +1,8 @@
 {
   "id": 2,
   "title": "Appliance Search",
-  "description": "A simple appliance search application built with FastAPI backend, vanilla JS frontend, and deployed via Docker.",
-  "tech_stack": ["Python", "FastAPI", "HTML", "CSS", "JavaScript", "Docker"],
+  "description": "A simple appliance search application built with FlaskAPI backend, vanilla JS frontend, and deployed via Docker.",
+  "tech_stack": ["Python", "FlaskAPI", "HTML", "CSS", "JavaScript","Groq", "Docker"],
   "github_url": "https://github.com/Muhammad-Khizer-Hayat/appliance-search",
   "live_url": null
 }
